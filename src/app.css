@@ -125,7 +125,7 @@ h1 {
 .felicitatie h2 { margin: 0 0 8px; font-family: var(--font-kop); font-size: 2rem; }
 .felicitatie p { margin: 0; }
 .felicitatie .eindtijd {
-  margin: 4px 0 24px;
+  margin: 4px 0 4px;
   font-family: var(--font-kop); font-size: 3.5rem; font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -220,3 +220,6 @@ h1 {
   padding: 12px clamp(12px, 3vw, 32px) calc(12px + env(safe-area-inset-bottom, 0px));
   background: var(--kleur-papier); border-top: 1px solid var(--kleur-lijn);
 }
+
+.felicitatie .eindklikken { margin: 0 0 24px; font-size: 1.1rem; font-weight: 600; }
+.status { flex-wrap: wrap; column-gap: 20px; row-gap: 4px; }
