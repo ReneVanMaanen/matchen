@@ -34,6 +34,7 @@ export default function Game({ set, bron, onOpenBeheer }) {
   const [startTijd, setStartTijd] = useState(null)
   const [eindTijd, setEindTijd] = useState(null)    // verstreken ms bij afronden
   const [nu, setNu] = useState(Date.now())
+  const [klikken, setKlikken] = useState(0)
   const [melding, setMelding] = useState({ tekst: START_TEKST, soort: 'info' })
   const foutTimer = useRef()
   const dialogRef = useRef()
@@ -49,6 +50,7 @@ export default function Game({ set, bron, onOpenBeheer }) {
     setOpgelost({})
     setStartTijd(null)
     setEindTijd(null)
+    setKlikken(0)
     setMelding({
       tekst: aankondigen ? "Nieuw spel: de foto's zijn opnieuw geschud." : START_TEKST,
       soort: 'info'
@@ -80,6 +82,9 @@ export default function Game({ set, bron, onOpenBeheer }) {
   function tik(card) {
     if (opgelost[card.pairId] !== undefined || fout) return
 
+    const aantalKlikken = klikken + 1
+    setKlikken(aantalKlikken)
+
     if (!startTijd) {
       const t = Date.now()
       setStartTijd(t)
@@ -107,7 +112,7 @@ export default function Game({ set, bron, onOpenBeheer }) {
       if (nummer === totaal) {
         const ms = Date.now() - (startTijd ?? Date.now())
         setEindTijd(ms)
-        setMelding({ tekst: `Alles goed! Je tijd: ${formatTime(ms)}.`, soort: 'goed' })
+        setMelding({ tekst: `Alles goed! Je tijd: ${formatTime(ms)}, in ${aantalKlikken} klikken.`, soort: 'goed' })
       } else {
         setMelding({ tekst: `Goed! Dat is paar ${nummer} van ${totaal}.`, soort: 'goed' })
       }
@@ -124,6 +129,7 @@ export default function Game({ set, bron, onOpenBeheer }) {
         <h1>{set.vraag || STANDAARD_VRAAG}</h1>
         <div className="status">
           <span>{aantalOpgelost} van {totaal} paren</span>
+          <span>{klikken} {klikken === 1 ? 'klik' : 'klikken'}</span>
           <span><span className="sr-only">Tijd: </span>{formatTime(verstreken)}</span>
         </div>
         <button type="button" className="knop" onClick={() => reset(true)}>
@@ -180,6 +186,9 @@ export default function Game({ set, bron, onOpenBeheer }) {
         <h2 id="felicitatie-titel">Gefeliciteerd!</h2>
         <p>Je hebt alle {totaal} paren gevonden in</p>
         <p className="eindtijd">{formatTime(eindTijd ?? 0)}</p>
+        <p className="eindklikken">
+          met {klikken} klikken <span className="hint">(minimaal {totaal * 2})</span>
+        </p>
         <button type="button" className="knop knop--vol" onClick={() => reset(true)} autoFocus>
           Nog een keer
         </button>
