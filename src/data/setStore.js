@@ -3,6 +3,11 @@ import { demoSet } from './demoSet.js'
 
 const KEY = 'actieve-set'
 
+// Foto lokaal bewaren als data-URL; lukt dat niet, dan het online adres gebruiken.
+async function bewaarLokaal(url) {
+  try { return await naarDataUrl(url) } catch { return url }
+}
+
 async function naarDataUrl(url) {
   const r = await fetch(url)
   if (!r.ok) throw new Error(`Foto niet geladen: ${url}`)
@@ -30,8 +35,8 @@ export async function loadActiveSet() {
     const pairs = await Promise.all(
       remote.pairs.map(async (p) => ({
         id: p.id,
-        a: { alt: p.a.alt, src: await naarDataUrl(p.a.src) },
-        b: { alt: p.b.alt, src: await naarDataUrl(p.b.src) }
+        a: { alt: p.a.alt, src: await bewaarLokaal(p.a.src) },
+        b: { alt: p.b.alt, src: await bewaarLokaal(p.b.src) }
       }))
     )
     const local = { ...remote, pairs }

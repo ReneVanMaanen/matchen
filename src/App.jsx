@@ -14,19 +14,23 @@ function useHash() {
 }
 
 export default function App() {
-  const hash = useHash()
+  const inBeheer = useHash() === '#beheer'
   const [state, setState] = useState({ status: 'laden', set: null, bron: null })
 
+  // Set (opnieuw) laden bij het openen van het spel en na terugkeer uit het beheer
   useEffect(() => {
-    loadActiveSet().then(({ set, bron }) => setState({ status: 'klaar', set, bron }))
-  }, [])
+    if (inBeheer) return
+    let actueel = true
+    loadActiveSet().then(({ set, bron }) => { if (actueel) setState({ status: 'klaar', set, bron }) })
+    return () => { actueel = false }
+  }, [inBeheer])
 
-  if (hash === '#beheer') {
+  if (inBeheer) {
     return <Beheer onClose={() => { window.location.hash = '' }} />
   }
 
   if (state.status === 'laden') {
-    return <main className="app"><p className="laden">Foto's laden…</p></main>
+    return <main className="app"><p className="laden">Foto’s laden…</p></main>
   }
 
   return (
