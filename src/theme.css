@@ -1,0 +1,12 @@
+/* Huisstijl: pas deze waarden per inzet aan (nu: bestelbijdeauteur.nl) */
+:root {
+  --kleur-inkt: #1d2b3a;
+  --kleur-papier: #f4f6f8;
+  --kleur-vlak: #ffffff;
+  --kleur-lijn: #d5dbe3;
+  --kleur-accent: #2457a5;   /* gekozen foto */
+  --kleur-goed: #1d7a45;     /* goed paar */
+  --kleur-fout: #b3261e;     /* fout paar */
+  --font-kop: Georgia, "Times New Roman", serif;
+  --font-tekst: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
